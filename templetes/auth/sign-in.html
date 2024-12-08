@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sign-in Screen Templete</title>
+  <!-- Link to the DocSearch CSS for documentation search styling -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+  <!-- Font Awesome CSS for using icons in the page -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS for styling the page using Bootstrap framework -->
+  <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- color theme MOD JS -->
+  <script src="/assets/js/color-modes.js"></script>
+</head>
+
+<body>
+  <div class="d-flex justify-content-center align-items-center vh-100 container">
+    <div class="bg-body-secondary shadow p-4 rounded-4" style="width: 100%; max-width: 400px;">
+      <div class="mb-4 text-center">
+        <h1 class="fw-bold fs-3">SOP Toolkit</h1>
+        <h5>Login to your Account</h5>
+      </div>
+      <form id="loginForm" novalidate>
+        <!-- Email Input -->
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control rounded-3" id="email" placeholder="name@example.com" required
+            autocomplete="email">
+          <label for="email">Email address</label>
+          <div class="invalid-feedback">
+            Please enter a valid email address.
+          </div>
+        </div>
+        <!-- Password Input -->
+        <div class="position-relative form-floating mb-3">
+          <input type="password" class="form-control rounded-3" id="password" placeholder="Password" required
+            autocomplete="current-password">
+          <label for="password">Password</label>
+          <p class="top-50 position-absolute translate-middle-y end-0 me-3" id="togglePassword">
+            <i class="fa-eye fas"></i>
+          </p>
+          <div class="invalid-feedback">
+            Password cannot be empty.
+          </div>
+        </div>
+        <!-- Remember Me and Forgot Password -->
+        <div class="form-check my-3 text-start">
+          <div class="d-flex align-items-center row">
+            <div class="d-flex align-items-center mb-2 mb-md-0 col-12 col-md-6">
+              <input class="form-check-input me-2" type="checkbox" value="remember-me" id="flexCheckDefault">
+              <label class="form-check-label mb-0" for="flexCheckDefault">
+                Remember me
+              </label>
+            </div>
+            <div class="text-md-end col-12 col-md-6">
+              <small class="d-block text-body-secondary">
+                <a href="./forget-password.html" class="text-decoration-none">Recover Now</a>.
+              </small>
+            </div>
+          </div>
+        </div>
+        <!-- Submit Button -->
+        <button class="rounded-3 w-100 btn btn-primary" type="submit">Sign In</button>
+        <!-- Signup Prompt -->
+        <small class="d-block mt-3 text-body-secondary text-center">
+          Don't have a Login Account? <a href="./sign-up.html" class="text-decoration-none">Signup Now</a>.
+        </small>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Initialize isValid flag
+      let isValid = true;
+
+      // Get inputs
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+
+      // Validate email
+      if (!emailInput.value || !emailInput.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        emailInput.classList.add("is-invalid");
+        isValid = false;
+      } else {
+        emailInput.classList.remove("is-invalid");
+      }
+
+      // Validate password
+      if (!passwordInput.value || passwordInput.value.length < 6) {
+        passwordInput.classList.add("is-invalid");
+        isValid = false;
+      } else {
+        passwordInput.classList.remove("is-invalid");
+      }
+
+      // Check overall form validity
+      if (isValid) {
+        alert('Login Successful!');
+        // Add your form submission logic here
+      }
+    });
+
+    // Toggle Password Visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function () {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      this.innerHTML = type === "password" ? '<i class="fa-eye fas"></i>' : '<i class="fa-eye-slash fas"></i>';
+    });
+
+  </script>
+  <script>
+    // Check if 'remember-me' is checked and prefill the email input
+    document.addEventListener('DOMContentLoaded', function () {
+      const emailInput = document.getElementById('email');
+      const rememberMeCheckbox = document.getElementById('flexCheckDefault');
+
+      // Check if there's a saved email in localStorage
+      if (localStorage.getItem('rememberMe') === 'true') {
+        emailInput.value = localStorage.getItem('savedEmail');
+        rememberMeCheckbox.checked = true;
+      }
+    });
+
+    // Handle the form submission
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const rememberMeCheckbox = document.getElementById('flexCheckDefault');
+
+      // If 'Remember Me' is checked, save the email and checkbox status
+      if (rememberMeCheckbox.checked) {
+        localStorage.setItem('savedEmail', emailInput.value);
+        localStorage.setItem('rememberMe', 'true');
+      } else {
+        // Clear saved email if 'Remember Me' is unchecked
+        localStorage.removeItem('savedEmail');
+        localStorage.setItem('rememberMe', 'false');
+      }
+
+      // You can add your login logic here
+      // For example, send the email and password to your backend server
+      console.log('Logging in with:', emailInput.value, passwordInput.value);
+    });
+  </script>
+
+</body>
+
+</html>
